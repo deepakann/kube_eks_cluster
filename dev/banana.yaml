@@ -89,7 +89,7 @@ metadata:
 spec:
  ports:
  - name: apache
-   port: 80 #service port
+   port: 5678 #service port
    targetPort: 5678 #container port
    protocol: TCP
  selector:     #mapping to pod
@@ -138,7 +138,7 @@ metadata:
 spec:
  ports:
  - name: apache
-   port: 80 #service port
+   port: 5678 #service port
    targetPort: 5678 #container port
    protocol: TCP
  selector:     #mapping to pod
@@ -172,7 +172,7 @@ spec:
            service:
                name: mediplussvc
                port:
-                 number: 80
+                 number: 5678 
    - host: "www.devstudy.online"
      http:
        paths:
@@ -182,4 +182,4 @@ spec:
            service:
               name: carvillasvc
               port:
-                number: 80
+                number: 5678
