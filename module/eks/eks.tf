@@ -8,6 +8,7 @@ resource "aws_eks_cluster" "eksmaster" {
   }
   depends_on = [
     aws_iam_role.master
+    aws_iam_role.master
   ]
   tags = {
     Name = "clustertype"
