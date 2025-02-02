@@ -32,11 +32,11 @@ resource "aws_eks_node_group" "instance-node-group" {
   node_group_name = "WorkerNG"
   node_role_arn = aws_iam_role.node-group-role.arn
   subnet_ids = [aws_subnet.pubsub01.id, aws_subnet.pubsub02.id]
-  instance_types = ["t2.micro"]
+  instance_types = ["t3.medium"]
   scaling_config {
-    desired_size = 2
+    desired_size = 3
     max_size     = 5 
-    min_size     = 2
+    min_size     = 3
   }
   labels = {
     zone = "east"
