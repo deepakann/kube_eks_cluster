@@ -1,0 +1,185 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webdeployment
+  namespace: devproject
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      apptype: web
+      env: dev
+  template:
+    metadata:
+      name: webtemp
+      labels:
+        apptype: web
+        env: dev
+    spec:
+      containers:
+      - image: sudarshanlnx/farmfresh:v1
+        name: webcon
+        imagePullPolicy: Always
+        ports:
+        -  name: apache
+           containerPort: 80
+           protocol: TCP
+        resources:
+           requests:
+             memory: "200Mi"
+             cpu: "200m"
+           limits:
+             memory: "300Mi"
+             cpu: "400m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: websvc   #service name (it can be any name)
+ namespace: devproject
+spec:
+ ports:
+ - name: apache
+   port: 80 #service port
+   targetPort: 80 #container port
+   protocol: TCP
+ selector:     #mapping to pod
+   apptype: web
+   env: dev
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mediplusdeployment
+  namespace: devproject
+spec:
+  replicas: 2 
+  selector:
+    matchLabels:
+      apptype: mediplus
+      env: dev
+  template:
+    metadata:
+      name: mediplustemp
+      labels:
+        apptype: mediplus
+        env: dev
+    spec:
+      containers:
+      - image: dkannaiy/mediplus:v4
+        name: medipluscon
+        imagePullPolicy: Always
+        ports:
+        -  name: apache
+           containerPort: 5678
+           protocol: TCP
+        resources:
+           requests:
+             memory: "200Mi"
+             cpu: "200m"
+           limits:
+             memory: "300Mi"
+             cpu: "400m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: mediplussvc   #service name (it can be any name)
+ namespace: devproject
+spec:
+ ports:
+ - name: apache
+   port: 80 #service port
+   targetPort: 5678 #container port
+   protocol: TCP
+ selector:     #mapping to pod
+   apptype: mediplus
+   env: dev
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carvilladeployment
+  namespace: devproject
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      apptype: carvilla
+      env: dev
+  template:
+    metadata:
+      name: carvillatemp
+      labels:
+        apptype: carvilla
+        env: dev
+    spec:
+      containers:
+      - image: dkannaiy/carvilla:v4
+        name: carvillacon
+        imagePullPolicy: Always
+        ports:
+        -  name: apache
+           containerPort: 5678
+           protocol: TCP
+        resources:
+           requests:
+             memory: "200Mi"
+             cpu: "200m"
+           limits:
+             memory: "300Mi"
+             cpu: "400m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: carvillasvc   #service name (it can be any name)
+ namespace: devproject
+spec:
+ ports:
+ - name: apache
+   port: 80 #service port
+   targetPort: 5678 #container port
+   protocol: TCP
+ selector:     #mapping to pod
+   apptype: carvilla
+   env: dev
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+   name: webingress
+   namespace: devproject
+spec:
+   ingressClassName: nginx
+   rules:
+   - host: "www.devstudy.online"
+     http:
+       paths:
+       - path: "/"
+         pathType: "Prefix"
+         backend:
+           service:
+             name: websvc
+             port:
+              number: 80
+   - host: "www.devstudy.online"
+     http:
+       paths:
+       - path: "/mediplus"
+         pathType: "Prefix"
+         backend:
+           service:
+               name: mediplussvc
+               port:
+                 number: 80 
+   - host: "www.devstudy.online"
+     http:
+       paths:
+       - path: "/carvilla"
+         pathType: "Prefix"
+         backend:
+           service:
+              name: carvillasvc
+              port:
+                number: 80 
