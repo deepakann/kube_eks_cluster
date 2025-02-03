@@ -172,7 +172,7 @@ spec:
            service:
                name: mediplussvc
                port:
-                 number: 5678 
+                 number: 80 
    - host: "www.devstudy.online"
      http:
        paths:
@@ -182,4 +182,4 @@ spec:
            service:
               name: carvillasvc
               port:
-                number: 5678
+                number: 80 
