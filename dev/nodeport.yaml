@@ -9,7 +9,7 @@ metadata:
 spec:
  containers:
  - name: webcon
-   image: dkannaiy/carvilla:v4 
+   image: dkannaiy/mediplus:v4 
    imagePullPolicy: Always
    ports:
    - containerPort: 80
